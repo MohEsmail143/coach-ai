@@ -30,7 +30,7 @@ final Exercise pushUps = Exercise(
   gif: 'assets/images/push_up.gif',
   trackedKeypoint: kKeypointDict['right_shoulder'] as int,
   trackingDirection: 0,
-  formCorrectnessModel: 'pushUp_version2.tflite',
+  formCorrectnessModel: 'models/pushUp_version2.tflite',
 );
 
 final Exercise pullUps = Exercise(
@@ -46,7 +46,7 @@ final Exercise pullUps = Exercise(
   gif: 'assets/images/pull_up.gif',
   trackedKeypoint: kKeypointDict['nose'] as int,
   trackingDirection: 1,
-  formCorrectnessModel: 'pullUp.tflite',
+  formCorrectnessModel: 'models/pullUp.tflite',
 );
 
 final Exercise squats = Exercise(
@@ -62,7 +62,7 @@ final Exercise squats = Exercise(
   gif: 'assets/images/squat.gif',
   trackedKeypoint: kKeypointDict['nose'] as int,
   trackingDirection: 1,
-  formCorrectnessModel: 'squat.tflite',
+  formCorrectnessModel: 'models/squat.tflite',
 );
 
 /// MoveNet Keypoints constants

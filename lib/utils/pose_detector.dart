@@ -52,10 +52,10 @@ class PoseDetector {
           ..threads = 4;
       }
       */
-      
+
       _interpreter = interpreter ??
           await Interpreter.fromAsset(
-            "movenet.tflite",
+            "models/movenet.tflite",
             // "movenet_singlepose_thunder.tflite",
             options: interpreterOptions ?? InterpreterOptions()
               ..threads = 4,

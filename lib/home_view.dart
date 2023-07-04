@@ -2,9 +2,7 @@ import 'package:coach_ai/screens/exercise_selection_screen.dart';
 import 'package:coach_ai/screens/nutrition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'exercices/pull_up.dart';
-// import 'exercices/push_up.dart';
-// import 'exercices/squats.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'mode.dart';
 import 'profile.dart';
 import 'utils/exercise.dart';
@@ -37,6 +35,24 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: const Color(0xFF40D876),
+          color: const Color(0xFF212121),
+          onTap: (index) {},
+          items: const [
+            Icon(
+              Icons.home,
+              color: Color(0xFFFAFAFA),
+            ),
+            Icon(
+              Icons.accessibility,
+              color: Color(0xFFFAFAFA),
+            ),
+            Icon(
+              Icons.logout,
+              color: Color(0xFFFAFAFA),
+            ),
+          ]),
       body: Container(
         width: double.infinity,
         height: double.infinity,
