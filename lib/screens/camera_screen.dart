@@ -5,6 +5,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+
 import '../utils/exercise.dart';
 import '../utils/rep_counter.dart';
 import '../utils/constants.dart';
@@ -46,22 +48,36 @@ class _CameraScreenState extends State<CameraScreen>
   double paddingX = 0;
   double paddingY = 0;
 
-  // RepCounter-related fields
+  /// WARM UP MODE-RELATED FIELDS
   bool warmupMode = false;
   bool warmedUpAtLeastOnce = false;
+  int _warmupSecondsRemaining = 15;
+  List<int> warmupInferences = [];
+  /// ******************************
+
+  /// REST MODE-RELATED FIELDS
   bool allowRestMode = false;
   bool currentlyRestingMode = false;
-  int _warmupSecondsRemaining = 15;
   late int _restSecondsRemaining;
-  List<int> warmupInferences = [];
+  /// ******************************
+
+  /// COUNTING REPS MODE-RELATED FIELDS
+  late RepCounter repCounter;
   bool countingRepsMode = false;
   List<int> countingRepsInferences = [];
-  late RepCounter repCounter;
   int currentSetCount = 0;
+  /// ******************************
+
+  /// SENSOR-RELATED FIELDS
+  late StreamSubscription<AccelerometerEvent> _accelerometerSubscription;
+  double _accelerationMagnitude = 0.0;
+  late bool isNotMoving;
+  /// ******************************
 
   // FormClassifier-related fields
   double formCorrectness = 0.0;
   late FormClassifier formClassifier;
+  /// ******************************
 
   @override
   void initState() {
@@ -69,7 +85,19 @@ class _CameraScreenState extends State<CameraScreen>
     formClassifier =
         FormClassifier(confidenceModel: widget.exercise.formCorrectnessModel);
     _restSecondsRemaining = widget.session.restTime;
+
+    /****** SENSOR-RELATED CODE ******/
+    _accelerometerSubscription =
+        accelerometerEvents.listen((AccelerometerEvent event) {
+      // Calculate the magnitude of the acceleration vector
+      _accelerationMagnitude =
+          event.x * event.x + event.y * event.y + event.z * event.z;
+    });
+    isNotMoving = _accelerationMagnitude < 0.1;
+    /*********************************/
+
     super.initState();
+
     initAsync();
   }
 
@@ -137,7 +165,8 @@ class _CameraScreenState extends State<CameraScreen>
           [widget.exercise.trackingDirection]);
     }
 
-    if (countingRepsMode == true &&
+    if (isNotMoving &&
+        countingRepsMode == true &&
         inferenceResults[widget.exercise.trackedKeypoint][2] >= 0.2) {
       repCounter.startCounting(inferenceResults[widget.exercise.trackedKeypoint]
           [widget.exercise.trackingDirection]);
@@ -248,7 +277,8 @@ class _CameraScreenState extends State<CameraScreen>
                 ),
               ),
               Visibility(
-                visible: countingRepsMode || warmupMode,
+                visible: warmupMode ||
+                    countingRepsMode && !currentlyRestingMode && allowRestMode,
                 child: Positioned(
                   bottom: 24,
                   left: 24,
@@ -314,7 +344,8 @@ class _CameraScreenState extends State<CameraScreen>
               ElevatedButton(
                 onPressed: () {
                   if (warmedUpAtLeastOnce) {
-                    if (allowRestMode) {
+                    if (allowRestMode &&
+                        (currentSetCount < widget.session.sets)) {
                       currentSetCount++;
                       if (currentSetCount < widget.session.sets) {
                         currentlyRestingMode = true;
@@ -415,6 +446,7 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   void dispose() {
     cameraController.dispose();
+    _accelerometerSubscription.cancel();
     isolate.stop();
     super.dispose();
   }

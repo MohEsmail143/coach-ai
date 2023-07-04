@@ -70,7 +70,7 @@ class welcom extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    "we want to Help you in your next steps,so follow the next steps ,to complete your information",
+                    "We will help you reach your potential.\nFollow the next steps, to complete your information",
                     style: GoogleFonts.lato(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,

@@ -49,6 +49,7 @@ dependencies:
     image: ^3.3.0
     image_picker: ^0.8.7+3
     flutter_gif: ^0.0.4
+    sensors_plus: ^3.0.2
     fluttertoast: ^8.2.2
     lottie: ^2.3.2
     path_provider: ^2.0.14
