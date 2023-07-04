@@ -7,13 +7,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 import '../utils/exercise.dart';
-import '../utils/rep_counter.dart';
-import '../utils/form_classifier.dart';
-import '../utils/pose_detector.dart';
-import '../utils/isolate_util.dart';
+import '../utils/camera/rep_counter.dart';
+import '../utils/camera/form_classifier.dart';
+import '../utils/camera/pose_detector.dart';
+import '../utils/camera/isolate_util.dart';
 
 import '../utils/workout_session.dart';
-import '../utils/render_landmarks.dart';
+import '../utils/camera/render_landmarks.dart';
 
 class CameraScreen extends StatefulWidget {
   late final List<CameraDescription> cameras;
@@ -347,18 +347,21 @@ class _CameraScreenState extends State<CameraScreen>
               /// ElevatedButton for Counting Reps Mode
               ElevatedButton(
                 onPressed: () {
-                  if (warmedUpAtLeastOnce) {
+                  if (warmedUpAtLeastOnce && !currentlyRestingMode) {
                     if (allowRestMode &&
                         (currentSetCount < widget.session.sets)) {
                       currentSetCount++;
                       if (currentSetCount < widget.session.sets) {
                         currentlyRestingMode = true;
                         startRestTimer();
-                        Timer(Duration(seconds: widget.session.restTime), () {
-                          allowRestMode = false;
-                          currentlyRestingMode = false;
-                          repCounter.resetRepCount();
-                        });
+                        Timer(
+                          Duration(seconds: widget.session.restTime),
+                          () {
+                            allowRestMode = false;
+                            currentlyRestingMode = false;
+                            repCounter.resetRepCount();
+                          },
+                        );
                       } else {
                         showDialog(
                           context: context,
@@ -400,7 +403,7 @@ class _CameraScreenState extends State<CameraScreen>
                     // repCounter.resetRepCount();
                     countingRepsMode = true;
                     allowRestMode = true;
-                  } else {
+                  } else if (!warmedUpAtLeastOnce) {
                     Fluttertoast.showToast(
                         msg: "You should warm up first",
                         toastLength: Toast.LENGTH_SHORT,

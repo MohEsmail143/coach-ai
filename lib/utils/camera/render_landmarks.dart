@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../utils/constants.dart';
-import '../utils/sample_input_pose.dart';
+import 'constants.dart';
+import 'sample_input_pose.dart';
 
 class RenderLandmarks extends CustomPainter {
   late List<dynamic> inferenceList;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'calculate_BMI.dart';
+import 'screens/bmi/calculate_BMI.dart';
 import 'home_view.dart';
 
 class welcom extends StatelessWidget {
