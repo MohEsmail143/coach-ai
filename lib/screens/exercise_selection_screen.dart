@@ -110,42 +110,87 @@ class _ExerciseSelectionScreenState extends State<ExerciseSelectionScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  /*
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.grey[900],
+                            title: const Text(
+                              'Targeted Muscles',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount:
+                                    widget.exercise.targetedMuscles.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(
+                                      "- ${widget.exercise.targetedMuscles[index]}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text(
+                                  'OK',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.grey[900],
-                      onPrimary: Colors.white,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.grey[900],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       minimumSize: const Size(150.0, 60.0),
                       textStyle: const TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 16.0,
                       ),
                     ),
-                    child: const Text('Warm Up'),
+                    child: const Text('Targeted Muscles'),
                   ),
-                  */
                   ElevatedButton(
                     onPressed: () {
                       //CameraScreen;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CameraScreen(
-                                  exercise: widget.exercise,
-                                  session: WorkoutSession(
-                                      reps: int.parse(repsController.text),
-                                      sets: int.parse(setsController.text),
-                                      restTime:
-                                          int.parse(restTimeController.text)),
-                                )),
+                          builder: (context) => CameraScreen(
+                            exercise: widget.exercise,
+                            session: WorkoutSession(
+                              reps: int.parse(repsController.text),
+                              sets: int.parse(setsController.text),
+                              restTime: int.parse(restTimeController.text),
+                            ),
+                          ),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      onPrimary: Colors.white,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),

@@ -6,6 +6,7 @@ class Exercise {
   final int trackedKeypoint;
   final int trackingDirection;
   final String formCorrectnessModel;
+  final List<String> targetedMuscles;
 
   Exercise({
     required this.name,
@@ -15,6 +16,7 @@ class Exercise {
     required this.trackedKeypoint,
     required this.trackingDirection,
     required this.formCorrectnessModel,
+    required this.targetedMuscles,
   });
 }
 
@@ -31,6 +33,7 @@ final Exercise pushUps = Exercise(
   trackedKeypoint: kKeypointDict['right_shoulder'] as int,
   trackingDirection: 0,
   formCorrectnessModel: 'models/pushUp_version2.tflite',
+  targetedMuscles: ['Chest', 'Triceps', 'Shoulders'],
 );
 
 final Exercise pullUps = Exercise(
@@ -47,6 +50,7 @@ final Exercise pullUps = Exercise(
   trackedKeypoint: kKeypointDict['nose'] as int,
   trackingDirection: 1,
   formCorrectnessModel: 'models/pullUp.tflite',
+  targetedMuscles: ['Back', 'Biceps', 'Shoulders'],
 );
 
 final Exercise squats = Exercise(
@@ -63,6 +67,7 @@ final Exercise squats = Exercise(
   trackedKeypoint: kKeypointDict['nose'] as int,
   trackingDirection: 1,
   formCorrectnessModel: 'models/squat.tflite',
+  targetedMuscles: ['Quads', 'Hip Flexors', 'Hamstrings', 'Glutes'],
 );
 
 /// MoveNet Keypoints constants
