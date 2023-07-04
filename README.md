@@ -28,7 +28,7 @@ To get started with the Coach.ai app, follow these steps:
 1. Clone the repository to your local machine.
 
 ```bash
-git clone https://github.com/<your-username>/coach-ai.git
+git clone https://github.com/MohEsmail143/coach-ai.git
 ```
 
 2. Navigate to the root directory of the project and run the following command to install the dependencies:
