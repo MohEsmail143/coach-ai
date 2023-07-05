@@ -25,6 +25,59 @@ class _ExerciseSelectionScreenState extends State<ExerciseSelectionScreen> {
   final TextEditingController repsController = TextEditingController();
   final TextEditingController restTimeController = TextEditingController();
 
+  final _setsFocusNode = FocusNode();
+  final _repsFocusNode = FocusNode();
+  final _restFocusNode = FocusNode();
+
+  bool _setsValidate = false;
+  bool _repsValidate = false;
+  bool _restValidate = false;
+
+  void _submit() {
+    if (setsController.text.isEmpty) {
+      setState(() {
+        _setsValidate = true;
+      });
+    } else {
+      setState(() {
+        _setsValidate = false;
+      });
+    }
+    if (repsController.text.isEmpty) {
+      setState(() {
+        _repsValidate = true;
+      });
+    } else {
+      setState(() {
+        _repsValidate = false;
+      });
+    }
+    if (restTimeController.text.isEmpty) {
+      setState(() {
+        _restValidate = true;
+      });
+    } else {
+      setState(() {
+        _restValidate = false;
+      });
+    }
+    if (!_setsValidate && !_repsValidate && !_restValidate) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CameraScreen(
+            exercise: widget.exercise,
+            session: WorkoutSession(
+              reps: int.parse(repsController.text),
+              sets: int.parse(setsController.text),
+              restTime: int.parse(restTimeController.text),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,18 +102,52 @@ class _ExerciseSelectionScreenState extends State<ExerciseSelectionScreen> {
               child: Column(
                 children: [
                   ExerciseSelectionTextField(
-                    hintText: 'Sets',
+                    titleText: 'Sets',
                     controller: setsController,
+                    focusNode: _setsFocusNode,
+                    validate: _setsValidate,
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () {
+                      if (setsController.text.isEmpty) {
+                        setState(() {
+                          _setsValidate = true;
+                        });
+                      } else {
+                        setState(() {
+                          _setsValidate = false;
+                        });
+                        _repsFocusNode.requestFocus();
+                      }
+                    },
                   ),
                   const SizedBox(height: 16),
                   ExerciseSelectionTextField(
-                    hintText: 'Reps',
+                    titleText: 'Reps',
                     controller: repsController,
+                    focusNode: _repsFocusNode,
+                    validate: _repsValidate,
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () {
+                      if (repsController.text.isEmpty) {
+                        setState(() {
+                          _repsValidate = true;
+                        });
+                      } else {
+                        setState(() {
+                          _repsValidate = false;
+                        });
+                        _restFocusNode.requestFocus();
+                      }
+                    },
                   ),
                   const SizedBox(height: 16),
                   ExerciseSelectionTextField(
-                    hintText: 'Rest',
+                    titleText: 'Rest',
                     controller: restTimeController,
+                    focusNode: _restFocusNode,
+                    validate: _restValidate,
+                    textInputAction: TextInputAction.done,
+                    onEditingComplete: _submit,
                   ),
                 ],
               ),
@@ -172,22 +259,7 @@ class _ExerciseSelectionScreenState extends State<ExerciseSelectionScreen> {
                     child: const Text('Targeted Muscles'),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      //CameraScreen;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CameraScreen(
-                            exercise: widget.exercise,
-                            session: WorkoutSession(
-                              reps: int.parse(repsController.text),
-                              sets: int.parse(setsController.text),
-                              restTime: int.parse(restTimeController.text),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                    onPressed: _submit,
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green,
@@ -212,24 +284,38 @@ class _ExerciseSelectionScreenState extends State<ExerciseSelectionScreen> {
 }
 
 class ExerciseSelectionTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String titleText;
+  final FocusNode focusNode;
+  final TextInputAction textInputAction;
+  final void Function()? onEditingComplete;
+  final bool validate;
+
   const ExerciseSelectionTextField({
     super.key,
     required this.controller,
-    required this.hintText,
+    required this.titleText,
+    required this.focusNode,
+    required this.textInputAction,
+    required this.onEditingComplete,
+    required this.validate,
   });
-
-  final TextEditingController controller;
-  final String hintText;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
         controller: controller,
+        focusNode: focusNode,
+        textInputAction: textInputAction,
+        onEditingComplete: onEditingComplete,
         decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(
-            color: Colors.white54,
+          labelText: titleText,
+          labelStyle: const TextStyle(
+            color: Colors.white,
           ),
+          errorText: validate
+              ? 'Please enter a value for ${titleText.toLowerCase()}'
+              : null,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: const BorderSide(
@@ -242,6 +328,13 @@ class ExerciseSelectionTextField extends StatelessWidget {
             borderSide: const BorderSide(
               width: 1,
               color: Colors.grey,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(
+              width: 1,
+              color: Colors.red,
             ),
           ),
           contentPadding: const EdgeInsets.symmetric(
