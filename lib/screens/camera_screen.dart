@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sensors_plus/sensors_plus.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
 import '../utils/camera/coach_tts.dart';
 import '../utils/exercise.dart';
@@ -91,6 +90,53 @@ class _CameraScreenState extends State<CameraScreen>
 
   /// ******************************
 
+  void showInstructions() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey[900],
+          title: const Text(
+            'Instructions',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.exercise.cameraInstructions.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    "- ${widget.exercise.cameraInstructions[index]}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     repCounter = RepCounter(maxRepCount: widget.session.reps);
@@ -105,7 +151,7 @@ class _CameraScreenState extends State<CameraScreen>
       _accelerationMagnitude =
           event.x * event.x + event.y * event.y + event.z * event.z;
     });
-    isNotMoving = _accelerationMagnitude < 0.1;
+    isNotMoving = _accelerationMagnitude == 0.0;
     /*********************************/
 
     super.initState();
@@ -130,7 +176,9 @@ class _CameraScreenState extends State<CameraScreen>
     classifier = PoseDetector();
     classifier.loadModel();
 
-    tts.speak("Welcome to Coach.ai! Start your warmup now.");
+    tts.speak(
+        "Welcome to Coach.ai! Please read the following instructions carefully.");
+    showInstructions();
 
     startCameraStream();
   }
@@ -470,6 +518,7 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   void dispose() {
+    tts.tts.stop();
     cameraController.dispose();
     _accelerometerSubscription.cancel();
     isolate.stop();

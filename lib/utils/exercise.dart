@@ -7,6 +7,7 @@ class Exercise {
   final int trackingDirection;
   final String formCorrectnessModel;
   final List<String> targetedMuscles;
+  final List<String> cameraInstructions;
 
   Exercise({
     required this.name,
@@ -17,6 +18,7 @@ class Exercise {
     required this.trackingDirection,
     required this.formCorrectnessModel,
     required this.targetedMuscles,
+    required this.cameraInstructions,
   });
 }
 
@@ -34,6 +36,16 @@ final Exercise pushUps = Exercise(
   trackingDirection: 0,
   formCorrectnessModel: 'models/pushUp_version2.tflite',
   targetedMuscles: ['Chest', 'Triceps', 'Shoulders'],
+  cameraInstructions: [
+    "For this exercise, you need to place your phone in a landscape orientation.",
+    "While exercising, your phone needs to be in a stable position (i.e. not move).",
+    "Your phone's camera should be able to view your entire body's right side, specially your right shoulder, since we use it to track your reps",
+    "Start a warmup for 15 seconds. This is necessary for our AI to calculate some statistics off your body.",
+    "Once you're done with your warmup, you should be able to start your workout",
+    "Once you have started a set, you should perform the required number of reps",
+    "When you're done, go back to your phone and start you rest period",
+    "If you want to, you can always just finish your set early and take your rest. Remember, exercise is supposed to be fun!",
+  ],
 );
 
 final Exercise pullUps = Exercise(
@@ -51,6 +63,16 @@ final Exercise pullUps = Exercise(
   trackingDirection: 1,
   formCorrectnessModel: 'models/pullUp.tflite',
   targetedMuscles: ['Back', 'Biceps', 'Shoulders'],
+  cameraInstructions: [
+    "For this exercise, you need to place your phone in a portrait orientation.",
+    "While exercising, your phone needs to be in a stable position (i.e. not move).",
+    "Your phone's camera should be able to view your entire body's anterior, specially your nose, since we use it to track your reps",
+    "Start a warmup for 15 seconds. This is necessary for our AI to calculate some statistics off your body.",
+    "Once you're done with your warmup, you should be able to start your workout",
+    "Once you have started a set, you should perform the required number of reps",
+    "When you're done, go back to your phone and start you rest period",
+    "If you want to, you can always just finish your set early and take your rest. Remember, exercise is supposed to be fun!",
+  ],
 );
 
 final Exercise squats = Exercise(
@@ -68,6 +90,16 @@ final Exercise squats = Exercise(
   trackingDirection: 1,
   formCorrectnessModel: 'models/squat.tflite',
   targetedMuscles: ['Quads', 'Hip Flexors', 'Hamstrings', 'Glutes'],
+  cameraInstructions: [
+    "For this exercise, you need to place your phone in a portrait orientation.",
+    "While exercising, your phone needs to be in a stable position (i.e. not move).",
+    "Your phone's camera should be able to view your entire body's anterior, specially your nose, since we use it to track your reps",
+    "Start a warmup for 15 seconds. This is necessary for our AI to calculate some statistics off your body.",
+    "Once you're done with your warmup, you should be able to start your workout",
+    "Once you have started a set, you should perform the required number of reps",
+    "When you're done, go back to your phone and start you rest period",
+    "If you want to, you can always just finish your set early and take your rest. Remember, exercise is supposed to be fun!",
+  ],
 );
 
 /// MoveNet Keypoints constants
