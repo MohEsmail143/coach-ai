@@ -14,13 +14,6 @@ class ExerciseSelectionScreen extends StatefulWidget {
 }
 
 class _ExerciseSelectionScreenState extends State<ExerciseSelectionScreen> {
-  // final List<String> _instructions = [
-  //   'Start in a plank position with your arms straight and your hands shoulder-width apart.',
-  //   'Lower your body until your chest touches the floor.',
-  //   'Push your body back up to the starting position.',
-  //   'Repeat for the desired number of reps.'
-  // ];
-
   final TextEditingController setsController = TextEditingController();
   final TextEditingController repsController = TextEditingController();
   final TextEditingController restTimeController = TextEditingController();

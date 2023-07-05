@@ -19,14 +19,11 @@ class _IntroPageState extends State<IntroPage> {
         children: <Widget>[
           CarouselSlider(
             items: [
-
-                 _buildCarouselItem(
-
-                  'assets/images/image3.jpg',
-                  'Get fit and healthy',
-                  'Track your workouts and stay motivated to reach your fitness goals.',
-
-              ) ,
+              _buildCarouselItem(
+                'assets/images/image3.jpg',
+                'Get fit and healthy',
+                'Track your workouts and stay motivated to reach your fitness goals.',
+              ),
               _buildCarouselItem(
                 'assets/images/emely.jpg',
                 'Join a community',
@@ -56,30 +53,43 @@ class _IntroPageState extends State<IntroPage> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
                   child: Text('Login'),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green), // set the background color
-                    padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(20)), // set the padding
-                    textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 23)), // set the text style
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.green), // set the background color
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                        EdgeInsets.all(20)), // set the padding
+                    textStyle: MaterialStateProperty.all<TextStyle>(
+                        TextStyle(fontSize: 23)), // set the text style
                     fixedSize: MaterialStateProperty.all<Size>(Size(20, 50)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))), // set the shape
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(10))), // set the shape
                   ),
                 ),
                 SizedBox(height: 16),
                 OutlinedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SignUpScreen()));
                   },
-                  child: Text('Sign up',style: TextStyle(color: Colors.white)),
+                  child: Text('Sign up', style: TextStyle(color: Colors.white)),
                   style: ButtonStyle(
-
-                    padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(20)), // set the padding
-                    textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 23)), // set the text style
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                        EdgeInsets.all(20)), // set the padding
+                    textStyle: MaterialStateProperty.all<TextStyle>(
+                        TextStyle(fontSize: 23)), // set the text style
                     fixedSize: MaterialStateProperty.all<Size>(Size(20, 50)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))), // set the shape
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(10))), // set the shape
                   ),
                 ),
               ],

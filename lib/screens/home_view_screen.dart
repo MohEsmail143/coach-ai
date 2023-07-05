@@ -3,19 +3,19 @@ import 'package:coach_ai/screens/nutrition_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'mode.dart';
-import 'profile.dart';
-import 'screens/bmi/calculate_BMI.dart';
-import 'utils/exercise.dart';
+import '../mode.dart';
+import '../profile.dart';
+import 'bmi/calculate_bmi.dart';
+import '../utils/exercise.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class HomeViewScreen extends StatefulWidget {
+  const HomeViewScreen({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<HomeViewScreen> createState() => _HomeViewScreenState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewScreenState extends State<HomeViewScreen> {
   int _currentIndex = 0;
   late PageController _pageController;
   late List<Widget> _screens;
@@ -66,6 +66,7 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: const Color(0xFF40D876),
+          buttonBackgroundColor: const Color(0xFF40D876),
           color: const Color(0xFF212121),
           onTap: _onItemTapped,
           items: const [
@@ -78,7 +79,7 @@ class _HomeViewState extends State<HomeView> {
               color: Color(0xFFFAFAFA),
             ),
             Icon(
-              Icons.note,
+              Icons.local_dining,
               color: Color(0xFFFAFAFA),
             ),
           ]),
@@ -88,6 +89,7 @@ class _HomeViewState extends State<HomeView> {
             _currentIndex = index;
           });
         },
+        physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: _screens,
       ),
@@ -126,7 +128,7 @@ class HomeViewBody extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "COUCOU,",
+                        "Welcome to ",
                         style: GoogleFonts.bebasNeue(
                           fontSize: 22,
                           color: Colors.white,
@@ -199,6 +201,7 @@ class HomeViewBody extends StatelessWidget {
                 ),
               ),
             ),
+            /*
             Padding(
               padding: const EdgeInsets.only(right: 20.0, top: 30),
               child: Row(
@@ -231,7 +234,8 @@ class HomeViewBody extends StatelessWidget {
                   )
                 ],
               ),
-            ),
+            ),*/
+            /*
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Container(
@@ -260,6 +264,9 @@ class HomeViewBody extends StatelessWidget {
                 ),
               ),
             ),
+            */
+
+            /*
             Padding(
               padding: const EdgeInsets.only(top: 15),
               child: Row(
@@ -312,6 +319,7 @@ class HomeViewBody extends StatelessWidget {
                 ],
               ),
             ),
+            */
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Row(

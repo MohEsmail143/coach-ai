@@ -226,6 +226,7 @@ class _CameraScreenState extends State<CameraScreen>
         if (_restSecondsRemaining > 0) {
           _restSecondsRemaining--;
         } else {
+          tts.speak("Time's up! Let's get back to work.");
           timer.cancel();
         }
       });

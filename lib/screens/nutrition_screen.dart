@@ -684,6 +684,7 @@ store-bought hummus for the dip, if desired.
       length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text('Diet Plan'),
           backgroundColor: Colors.black54,
           bottom: PreferredSize(

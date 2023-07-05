@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'screens/bmi/calculate_BMI.dart';
-import 'home_view.dart';
+import 'home_view_screen.dart';
 
-class welcom extends StatelessWidget {
-  //const welcom({Key? key}) : super(key: key);
+class WelcomeScreen extends StatelessWidget {
   final List levels = [
     "inactive",
     "Beginner",
   ];
+
+  WelcomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/image2.png"),
             fit: BoxFit.cover,
@@ -32,9 +32,9 @@ class welcom extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 70.0),
                   child: Text(
-                    "COACH  ",
+                    "COACH",
                     style: GoogleFonts.bebasNeue(
-                      fontSize: 32,
+                      fontSize: 56,
                       color: Colors.white,
                       letterSpacing: 1.8,
                     ),
@@ -43,10 +43,10 @@ class welcom extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 70.0),
                   child: Text(
-                    ". AI ",
+                    ".AI ",
                     style: GoogleFonts.bebasNeue(
-                      fontSize: 32,
-                      color: Color(0xFF68B984),
+                      fontSize: 56,
+                      color: const Color(0xFF68B984),
                       letterSpacing: 1.8,
                     ),
                   ),
@@ -54,19 +54,22 @@ class welcom extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 40),
+              padding: const EdgeInsets.only(
+                left: 40.0,
+                right: 25,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "About US",
+                    "About Us",
                     style: GoogleFonts.lato(
-                      fontSize: 42,
+                      fontSize: 36,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -77,10 +80,11 @@ class welcom extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
+                  /*
                   Padding(
                     padding: const EdgeInsets.only(top: 40.0),
                     child: GestureDetector(
-                      child: Container(
+                      child: SizedBox(
                         height: 150,
                         width: 220,
                         // width: MediaQuery.of(context).size.width,
@@ -92,30 +96,31 @@ class welcom extends StatelessWidget {
                         // padding: const EdgeInsets.only(right: 10),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => BMI()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const BMI()));
                           },
                           child: Container(
                             height: 226,
                             width: 10,
                             decoration: BoxDecoration(
-                              color: Color(0xFF68B984),
+                              color: const Color(0xFF68B984),
                               borderRadius: BorderRadius.circular(20.0),
                             ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20.0, top: 30.0),
+                            child: const Padding(
+                              padding: EdgeInsets.only(left: 20.0, top: 30.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "Use our BMI \n   calculor ",
-                                    style: GoogleFonts.lato(
-                                      fontSize: 28,
-                                      color: Color(0xFF251749),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  // Text(
+                                  //   "Use our BMI \n   calculor ",
+                                  //   style: GoogleFonts.lato(
+                                  //     fontSize: 28,
+                                  //     color: Color(0xFF251749),
+                                  //     fontWeight: FontWeight.bold,
+                                  //   ),
+                                  // ),
                                   SizedBox(
                                     height: 10.0,
                                   ),
@@ -140,6 +145,7 @@ class welcom extends StatelessWidget {
                       ),
                     ),
                   ),
+                  */
                   Padding(
                     padding:
                         const EdgeInsets.only(right: 40.0, top: 40, bottom: 40),
@@ -159,13 +165,14 @@ class welcom extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomeView()));
+                                    builder: (context) =>
+                                        const HomeViewScreen()));
                           },
                           child: Container(
                             width: 139,
                             height: 39,
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.7),
+                              color: const Color(0xFF68B984).withOpacity(0.7),
                               borderRadius: BorderRadius.circular(5.0),
                             ),
                             child: Center(
