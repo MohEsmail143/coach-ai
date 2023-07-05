@@ -61,14 +61,35 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Exercise, ",
+                        style: GoogleFonts.lato(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "Made Fun",
+                        style: GoogleFonts.lato(
+                          fontSize: 24,
+                          color: const Color(0xFF68B984),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  /*
                   Text(
-                    "About Us",
+                    "Exercise, Made Fun",
                     style: GoogleFonts.lato(
-                      fontSize: 36,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
-                  ),
+                  ),*/
                   const SizedBox(
                     height: 20,
                   ),

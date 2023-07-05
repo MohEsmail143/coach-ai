@@ -90,6 +90,48 @@ class _CameraScreenState extends State<CameraScreen>
 
   /// ******************************
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: Colors.grey[900],
+            title: const Text(
+              'Are you sure?',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            content: const Text(
+              'Do you want to exit this screen?',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   void showInstructions() {
     showDialog(
       context: context,
@@ -283,223 +325,229 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              ///
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: paddingX,
-                  vertical: paddingY,
-                ),
-                child: initialized
-                    ? SizedBox(
-                        // height: MediaQuery.of(context).size.height,
-                        // width: MediaQuery.of(context).size.width,
-                        child: CustomPaint(
-                          foregroundPainter: RenderLandmarks(inferences),
-                          child: !cameraController.value.isInitialized
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : CameraPreview(cameraController),
-                        ),
-                      )
-                    : SizedBox(
-                        width: cameraController.value.previewSize?.width,
-                        height: cameraController.value.previewSize?.height,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-              ),
-              Positioned(
-                bottom: 60,
-                right: 24,
-                child: Text(
-                  "$currentSetCount / ${widget.session.sets} sets",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Column(
+          children: [
+            Stack(
+              children: [
+                ///
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: paddingX,
+                    vertical: paddingY,
                   ),
+                  child: initialized
+                      ? SizedBox(
+                          // height: MediaQuery.of(context).size.height,
+                          // width: MediaQuery.of(context).size.width,
+                          child: CustomPaint(
+                            foregroundPainter: RenderLandmarks(inferences),
+                            child: !cameraController.value.isInitialized
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : CameraPreview(cameraController),
+                          ),
+                        )
+                      : SizedBox(
+                          width: cameraController.value.previewSize?.width,
+                          height: cameraController.value.previewSize?.height,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                 ),
-              ),
-              Positioned(
-                bottom: 24,
-                right: 24,
-                child: Text(
-                  "${repCounter.currentRepCount} / ${widget.session.reps} reps",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: warmupMode ||
-                    countingRepsMode && !currentlyRestingMode && allowRestMode,
-                child: Positioned(
-                  bottom: 24,
-                  left: 24,
+                Positioned(
+                  bottom: 60,
+                  right: 24,
                   child: Text(
-                    // "${(formCorrectness * 100).toStringAsFixed(2)}%",
-                    formCorrectness > 0.5 ? "Correct" : "Incorrect",
-                    style: TextStyle(
-                      color: formCorrectness > 0.5 ? Colors.green : Colors.red,
+                    "$currentSetCount / ${widget.session.sets} sets",
+                    style: const TextStyle(
+                      color: Colors.white,
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          // Text(warmupInferences.toString()),
-
-          /// Row containing buttons for user interaction
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /// ElevatedButton for Warmup Mode
-              ElevatedButton(
-                onPressed: () {
-                  /// When this button is clicked, the app should:
-                  /// 1- Track a set of frames for a given period of time
-                  /// 2- Across all these frames, track the nose
-                  /// (you should now have an array of y values for the nose)
-                  /// 3- Get the min and max altitude
-                  warmupInferences.clear();
-                  warmupMode = true;
-                  startWarmupTimer();
-                  Timer(const Duration(seconds: 15), () {
-                    warmupMode = false;
-                    repCounter.warmup(warmupInferences);
-                    warmedUpAtLeastOnce = true;
-                    tts.speak(
-                        "You have now finished your warmup. You can start exercising now! Don't worry, I will tell you each time you perform a rep, and when you complete a set.");
-                  });
-                  // print(warmupInferences);
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.grey[900],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  minimumSize: const Size(150.0, 60.0),
-                  textStyle: const TextStyle(
-                    fontSize: 20.0,
+                Positioned(
+                  bottom: 24,
+                  right: 24,
+                  child: Text(
+                    "${repCounter.currentRepCount} / ${widget.session.reps} reps",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                child:
-                    Text(warmupMode ? "$_warmupSecondsRemaining s" : 'Warmup'),
-              ),
+                Visibility(
+                  visible: warmupMode ||
+                      countingRepsMode &&
+                          !currentlyRestingMode &&
+                          allowRestMode,
+                  child: Positioned(
+                    bottom: 24,
+                    left: 24,
+                    child: Text(
+                      // "${(formCorrectness * 100).toStringAsFixed(2)}%",
+                      formCorrectness > 0.5 ? "Correct" : "Incorrect",
+                      style: TextStyle(
+                        color:
+                            formCorrectness > 0.5 ? Colors.green : Colors.red,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            // Text(warmupInferences.toString()),
 
-              /// SizedBox for button seperation
-              const SizedBox(width: 16.0),
-
-              /// ElevatedButton for Counting Reps Mode
-              ElevatedButton(
-                onPressed: () {
-                  if (warmedUpAtLeastOnce && !currentlyRestingMode) {
-                    if (allowRestMode &&
-                        (currentSetCount < widget.session.sets)) {
-                      currentSetCount++;
+            /// Row containing buttons for user interaction
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                /// ElevatedButton for Warmup Mode
+                ElevatedButton(
+                  onPressed: () {
+                    /// When this button is clicked, the app should:
+                    /// 1- Track a set of frames for a given period of time
+                    /// 2- Across all these frames, track the nose
+                    /// (you should now have an array of y values for the nose)
+                    /// 3- Get the min and max altitude
+                    warmupInferences.clear();
+                    warmupMode = true;
+                    startWarmupTimer();
+                    Timer(const Duration(seconds: 15), () {
+                      warmupMode = false;
+                      repCounter.warmup(warmupInferences);
+                      warmedUpAtLeastOnce = true;
                       tts.speak(
-                          "You have finished your set! Take a ${widget.session.restTime} second break and come back.");
-                      if (currentSetCount < widget.session.sets) {
-                        currentlyRestingMode = true;
-                        startRestTimer();
-                        Timer(
-                          Duration(seconds: widget.session.restTime),
-                          () {
-                            allowRestMode = false;
-                            currentlyRestingMode = false;
-                            repCounter.resetRepCount();
-                          },
-                        );
-                      } else {
-                        tts.speak(
-                            "Well done! You have completed your workout! Great Job!");
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              backgroundColor: Colors.grey[900],
-                              title: const Text(
-                                'Congratulations!',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              content: const Text(
-                                'You have finished your workout.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text(
-                                    'OK',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    }
-                    // repCounter.resetRepCount();
-                    countingRepsMode = true;
-                    allowRestMode = true;
-                  } else if (!warmedUpAtLeastOnce) {
-                    Fluttertoast.showToast(
-                        msg: "You should warm up first",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                          "You have now finished your warmup. You can start exercising now! Don't worry, I will tell you each time you perform a rep, and when you complete a set.");
+                    });
+                    // print(warmupInferences);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.grey[900],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    minimumSize: const Size(150.0, 60.0),
+                    textStyle: const TextStyle(
+                      fontSize: 20.0,
+                    ),
                   ),
-                  minimumSize: const Size(150.0, 60.0),
-                  textStyle: const TextStyle(
-                    fontSize: 20.0,
-                  ),
+                  child: Text(
+                      warmupMode ? "$_warmupSecondsRemaining s" : 'Warmup'),
                 ),
-                child: Text(allowRestMode
-                    ? currentlyRestingMode
-                        ? "$_restSecondsRemaining s"
-                        : 'Rest'
-                    : 'Start'),
-              ),
-            ],
-          ),
-        ],
+
+                /// SizedBox for button seperation
+                const SizedBox(width: 16.0),
+
+                /// ElevatedButton for Counting Reps Mode
+                ElevatedButton(
+                  onPressed: () {
+                    if (warmedUpAtLeastOnce && !currentlyRestingMode) {
+                      if (allowRestMode &&
+                          (currentSetCount < widget.session.sets)) {
+                        currentSetCount++;
+                        tts.speak(
+                            "You have finished your set! Take a ${widget.session.restTime} second break and come back.");
+                        if (currentSetCount < widget.session.sets) {
+                          currentlyRestingMode = true;
+                          startRestTimer();
+                          Timer(
+                            Duration(seconds: widget.session.restTime),
+                            () {
+                              allowRestMode = false;
+                              currentlyRestingMode = false;
+                              repCounter.resetRepCount();
+                            },
+                          );
+                        } else {
+                          tts.speak(
+                              "Well done! You have completed your workout! Great Job!");
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.grey[900],
+                                title: const Text(
+                                  'Congratulations!',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                content: const Text(
+                                  'You have finished your workout.',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text(
+                                      'OK',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      }
+                      // repCounter.resetRepCount();
+                      countingRepsMode = true;
+                      allowRestMode = true;
+                    } else if (!warmedUpAtLeastOnce) {
+                      Fluttertoast.showToast(
+                          msg: "You should warm up first",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    minimumSize: const Size(150.0, 60.0),
+                    textStyle: const TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  child: Text(allowRestMode
+                      ? currentlyRestingMode
+                          ? "$_restSecondsRemaining s"
+                          : 'Rest'
+                      : 'Start'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
