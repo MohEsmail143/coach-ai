@@ -51,6 +51,7 @@ dependencies:
     flutter_gif: ^0.0.4
     sensors_plus: ^3.0.2
     fluttertoast: ^8.2.2
+    flutter_tts: ^3.7.0
     lottie: ^2.3.2
     path_provider: ^2.0.14
     tflite_flutter: ^0.9.1

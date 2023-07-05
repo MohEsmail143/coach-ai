@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'coach_tts.dart';
 
 class RepCounter {
   int maxRepCount;
@@ -7,6 +8,7 @@ class RepCounter {
   late int maxAltitude;
   late double midpoint;
   late double quartile;
+  CoachTTS tts = CoachTTS();
 
   late int currentRepCount = 0;
   bool upPosition = false;
@@ -39,6 +41,7 @@ class RepCounter {
     if (trackedKeypointLocation > (midpoint + quartile) &&
         upPosition == false) {
       currentRepCount += 1;
+      tts.speak(currentRepCount.toString());
       upPosition = true;
     } else if (trackedKeypointLocation < midpoint) {
       upPosition = false;

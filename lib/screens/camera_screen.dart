@@ -1,16 +1,19 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
+import '../utils/camera/coach_tts.dart';
 import '../utils/exercise.dart';
 import '../utils/camera/rep_counter.dart';
 import '../utils/camera/form_classifier.dart';
 import '../utils/camera/pose_detector.dart';
-import '../utils/camera/isolate_util.dart';
+import '../utils/camera/pose_detector_isolate.dart';
 
 import '../utils/workout_session.dart';
 import '../utils/camera/render_landmarks.dart';
@@ -35,11 +38,11 @@ class _CameraScreenState extends State<CameraScreen>
   late CameraController cameraController;
   CameraImage? cameraImage;
 
-  // Initializing isolate and classifier objects
+  /// Initializing isolate and classifier objects
   late PoseDetector classifier;
-  late IsolateUtils isolate;
+  late PoseDetectorIsolate isolate;
 
-  // Boolean flags for prediction and camera initialization
+  /// Boolean flags for prediction and camera initialization
   bool predicting = false;
   bool initialized = false;
 
@@ -77,9 +80,14 @@ class _CameraScreenState extends State<CameraScreen>
 
   /// ******************************
 
-  // FormClassifier-related fields
+  /// FormClassifier-related fields
   double formCorrectness = 0.0;
   late FormClassifier formClassifier;
+
+  /// ******************************
+
+  /// FlutterTTS-related field
+  CoachTTS tts = CoachTTS();
 
   /// ******************************
 
@@ -101,7 +109,6 @@ class _CameraScreenState extends State<CameraScreen>
     /*********************************/
 
     super.initState();
-
     initAsync();
   }
 
@@ -117,30 +124,34 @@ class _CameraScreenState extends State<CameraScreen>
       );
     });
 
-    isolate = IsolateUtils();
+    isolate = PoseDetectorIsolate();
     await isolate.start();
 
     classifier = PoseDetector();
     classifier.loadModel();
 
-    startCamera();
+    tts.speak("Welcome to Coach.ai! Start your warmup now.");
+
+    startCameraStream();
   }
 
-  void startCamera() {
+  void startCameraStream() {
     cameraController.initialize().then((_) {
       if (!mounted) {
         return;
       } else {
         cameraController.startImageStream((imageStream) {
-          createIsolate(imageStream);
+          communicateWithIsolate(imageStream);
         });
       }
     }).catchError((e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     });
   }
 
-  void createIsolate(CameraImage imageStream) async {
+  void communicateWithIsolate(CameraImage imageStream) async {
     if (predicting == true) {
       return;
     }
@@ -164,14 +175,14 @@ class _CameraScreenState extends State<CameraScreen>
     List<dynamic> inferenceResults =
         inferenceResultsMap['resultsCoordinates'] as List<dynamic>;
 
-    if (warmupMode == true) {
+    if (warmupMode) {
       warmupInferences.add(inferenceResults[widget.exercise.trackedKeypoint]
           [widget.exercise.trackingDirection]);
     }
 
     if (isNotMoving &&
-        countingRepsMode == true &&
-        inferenceResults[widget.exercise.trackedKeypoint][2] >= 0.2) {
+        countingRepsMode &&
+        inferenceResults[widget.exercise.trackedKeypoint][2] >= 0.3) {
       repCounter.startCounting(inferenceResults[widget.exercise.trackedKeypoint]
           [widget.exercise.trackingDirection]);
       if (repCounter.currentRepCount >= repCounter.maxRepCount) {
@@ -323,6 +334,8 @@ class _CameraScreenState extends State<CameraScreen>
                     warmupMode = false;
                     repCounter.warmup(warmupInferences);
                     warmedUpAtLeastOnce = true;
+                    tts.speak(
+                        "You have now finished your warmup. You can start exercising now! Don't worry, I will tell you each time you perform a rep, and when you complete a set.");
                   });
                   // print(warmupInferences);
                 },
@@ -351,6 +364,8 @@ class _CameraScreenState extends State<CameraScreen>
                     if (allowRestMode &&
                         (currentSetCount < widget.session.sets)) {
                       currentSetCount++;
+                      tts.speak(
+                          "You have finished your set! Take a ${widget.session.restTime} second break and come back.");
                       if (currentSetCount < widget.session.sets) {
                         currentlyRestingMode = true;
                         startRestTimer();
@@ -363,6 +378,8 @@ class _CameraScreenState extends State<CameraScreen>
                           },
                         );
                       } else {
+                        tts.speak(
+                            "Well done! You have completed your workout! Great Job!");
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {

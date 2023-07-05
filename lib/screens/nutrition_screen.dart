@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter/src/material/colors.dart';
 
-class Nutrition extends StatelessWidget {
+class NutritionScreen extends StatelessWidget {
   //const Nutrition({super.key});
 
   List<Tab> tabs = [

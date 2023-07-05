@@ -5,7 +5,7 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 
 import 'pose_detector.dart';
 
-class IsolateUtils {
+class PoseDetectorIsolate {
   static const String debugName = "InferenceIsolate";
 
   // ignore: unused_field
