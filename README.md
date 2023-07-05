@@ -37,11 +37,7 @@ git clone https://github.com/MohEsmail143/coach-ai.git
 flutter pub get
 ```
 
-3. For Windows machines, execute `install.bat` at the root of your project to automatically download and place binaries related to the plugin `tflite_flutter` at appropriate folders.
-
-4. Set up Firebase authentication in your project by following the instructions in the [Firebase documentation](https://firebase.google.com/docs/flutter/setup).
-
-5. Launch the app on an emulator or a physical device:
+3. Launch the app on an emulator or a physical device
 
 ```bash
 flutter run
