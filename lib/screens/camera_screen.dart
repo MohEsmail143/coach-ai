@@ -288,7 +288,7 @@ class _CameraScreenState extends State<CameraScreen>
     if (!adviceCooldown &&
         formCorrectness < 0.5 &&
         (warmupMode || (countingRepsMode))) {
-      print("here");
+      // print("here");
       tts.speak(widget.exercise.correctionAdvice[
           currentAdvice % widget.exercise.correctionAdvice.length]);
       currentAdvice++;

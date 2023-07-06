@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/src/material/colors.dart';
 
 class NutritionScreen extends StatelessWidget {
-  //const Nutrition({super.key});
+  //const NutritionScreen({super.key});
 
   List<Tab> tabs = [
     Tab(
@@ -685,7 +685,7 @@ store-bought hummus for the dip, if desired.
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text('Diet Plan'),
+          title: const Text('Diet Plan'),
           backgroundColor: Colors.black54,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(40),
