@@ -3,8 +3,7 @@ import 'package:coach_ai/screens/nutrition_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import '../mode.dart';
-import '../profile.dart';
+import 'profile_screen.dart';
 import 'bmi/calculate_bmi.dart';
 import '../utils/exercise.dart';
 
@@ -20,25 +19,6 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
   late PageController _pageController;
   late List<Widget> _screens;
 
-  /// Our available exercises
-  final List<Category> catego = [
-    Category(
-      imagUrl: pushUps.image,
-      name: pushUps.name,
-      page: ExerciseSelectionScreen(exercise: pushUps),
-    ),
-    Category(
-      imagUrl: pullUps.image,
-      name: pullUps.name,
-      page: ExerciseSelectionScreen(exercise: pullUps),
-    ),
-    Category(
-      imagUrl: squats.image,
-      name: squats.name,
-      page: ExerciseSelectionScreen(exercise: squats),
-    ),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -53,7 +33,7 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
   @override
   void initState() {
     _screens = [
-      HomeViewBody(catego: catego),
+      const HomeViewBody(),
       const BMI(),
       NutritionScreen(),
     ];
@@ -100,10 +80,7 @@ class _HomeViewScreenState extends State<HomeViewScreen> {
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({
     super.key,
-    required this.catego,
   });
-
-  final List<Category> catego;
 
   @override
   Widget build(BuildContext context) {
@@ -111,13 +88,17 @@ class HomeViewBody extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       decoration: const BoxDecoration(
+        color: Colors.black,
         image: DecorationImage(
-          image: AssetImage("assets/images/image3.jpg"),
+          opacity: 0.5,
+          image: AssetImage(
+            "assets/images/image3.jpg",
+          ),
           fit: BoxFit.cover,
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0, left: 20),
+        padding: const EdgeInsets.only(top: 30.0, left: 10, right: 10),
         child: Column(
           children: [
             Padding(
@@ -150,8 +131,8 @@ class HomeViewBody extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const ProfilePage(userId: 'your_user_id_here')),
+                            builder: (context) => const ProfileScreen(
+                                userId: 'your_user_id_here')),
                       );
                     },
                     child: Container(
@@ -174,7 +155,7 @@ class HomeViewBody extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 40.0),
+              padding: const EdgeInsets.only(top: 20.0),
               child: Container(
                 width: 70,
                 height: 70,
@@ -265,7 +246,6 @@ class HomeViewBody extends StatelessWidget {
               ),
             ),
             */
-
             /*
             Padding(
               padding: const EdgeInsets.only(top: 15),
@@ -320,73 +300,188 @@ class HomeViewBody extends StatelessWidget {
               ),
             ),
             */
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                children: [
-                  Text(
-                    "Popular Workouts",
-                    style: GoogleFonts.lato(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+            Text(
+              "Popular Workouts",
+              style: GoogleFonts.lato(
+                fontSize: 30,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              // child: Container(
-              child: SizedBox(
-                width: double.infinity,
-                height: 200,
-                child: ListView.builder(
-                    itemCount: catego.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            catego[index].page));
-                              },
-                              child: Container(
-                                height: 172,
-                                width: 141,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(catego[index].imagUrl),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              catego[index].name,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: availableExercises.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (BuildContext context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExerciseSelectionScreen(
+                            exercise: availableExercises[index],
+                          ),
                         ),
                       );
-                    }),
-              ),
-            )
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      color: Colors.black54,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 12, right: 8, top: 8, bottom: 8),
+                        child: CustomListTile(
+                          exercise: availableExercises[index],
+                        ),
+                      ),
+                    ),
+                  );
+                  /*
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        catego[index].page));
+                          },
+                          child: Container(
+                            height: 172,
+                            width: 141,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(catego[index].imagUrl),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          catego[index].name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                  */
+                })
           ],
         ),
       ),
     );
   }
 }
+
+class CustomListTile extends StatelessWidget {
+  final Exercise exercise;
+
+  const CustomListTile({
+    required this.exercise,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 120,
+      // padding: const EdgeInsets.all(4),
+      child: Row(children: [
+        Expanded(
+          flex: 9,
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(exercise.image),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+        const Spacer(
+          flex: 1,
+        ),
+        Expanded(
+          flex: 14,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Text(
+                exercise.name,
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: exercise.targetedMuscles.length,
+                itemBuilder: (BuildContext context, int i) {
+                  return Text(
+                    "- ${exercise.targetedMuscles[i]}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white70,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ]),
+    );
+  }
+}
+
+
+// ListTile(
+//   // contentPadding: EdgeInsets.zero,
+//   leading: Container(
+//     height: 172,
+//     width: 141,
+//     decoration: BoxDecoration(
+//       image: DecorationImage(
+//         image: AssetImage(catego[index].imageUrl),
+//         fit: BoxFit.cover,
+//       ),
+//     ),
+//   ),
+//   title: Text(
+//     catego[index].name,
+//     style: const TextStyle(
+//       fontWeight: FontWeight.bold,
+//       fontSize: 24,
+//       color: Colors.white,
+//     ),
+//   ),
+//   subtitle: ListView.builder(
+//     shrinkWrap: true,
+//     physics: const NeverScrollableScrollPhysics(),
+//     itemCount:
+//         catego[index].exercise.targetedMuscles.length,
+//     itemBuilder: (BuildContext context, int i) {
+//       return Text(
+//         "- ${catego[index].exercise.targetedMuscles[i]}",
+//         style: const TextStyle(
+//           fontSize: 16,
+//           color: Colors.white70,
+//         ),
+//       );
+//     },
+//   ),
+// )

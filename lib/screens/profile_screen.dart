@@ -1,16 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-class ProfilePage extends StatefulWidget {
+
+class ProfileScreen extends StatefulWidget {
   final String userId;
 
-  const ProfilePage({Key? key, required this.userId}) : super(key: key);
+  const ProfileScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfileScreenState extends State<ProfileScreen> {
   late Stream<DocumentSnapshot> _userStream;
   String _name = '';
   String _email = '';
@@ -23,8 +24,10 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
 
     // Fetch user data from Firebase
-    _userStream =
-        FirebaseFirestore.instance.collection('users').doc(widget.userId).snapshots();
+    _userStream = FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .snapshots();
     _userStream.listen((snapshot) {
       setState(() {
         _name = snapshot.get('name');
@@ -49,17 +52,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-
+    return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Container(
             height: 200,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/profile_background.jpg'),
                 fit: BoxFit.cover,
@@ -72,16 +74,16 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             _name,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             _email,
             textAlign: TextAlign.center,
@@ -90,18 +92,18 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.grey[600],
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'Bio: $_bio',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             'Progress',
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -122,12 +124,12 @@ class _ProfilePageState extends State<ProfilePage> {
               },
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.grey[200],
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
@@ -135,18 +137,18 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text('Personal Information'),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    leading: const Icon(Icons.person),
+                    title: const Text('Personal Information'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
                       // TODO: Navigate to personal information page
                     },
                   ),
-                  Divider(),
+                  const Divider(),
                   ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Settings'),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Settings'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () {
                       // TODO: Navigate to settings page
                     },
@@ -163,13 +165,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildSportProgress(String sport, String distance, int percentage) {
     return ListTile(
       leading: CircleAvatar(
+        backgroundColor: Colors.blue,
         child: Text(
           sport.substring(0, 2),
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.blue,
       ),
       title: Text(sport),
       subtitle: Text(distance),
@@ -181,10 +183,10 @@ class _ProfilePageState extends State<ProfilePage> {
               child: LinearProgressIndicator(
                 value: percentage / 100,
                 backgroundColor: Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text('$percentage%'),
           ],
         ),

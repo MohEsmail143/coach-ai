@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Coach.ai',
       theme: ThemeData(
+        // brightness: Brightness.dark,
         textTheme: GoogleFonts.urbanistTextTheme(),
         primarySwatch: Colors.blue,
       ),
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
             return const HomeScreen();
           } else {
             return WelcomeScreen();
-            // return  IntroPage();
+            // return IntroPage();
           }
         },
       ),
