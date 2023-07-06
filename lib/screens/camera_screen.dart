@@ -87,50 +87,10 @@ class _CameraScreenState extends State<CameraScreen>
 
   /// FlutterTTS-related field
   CoachTTS tts = CoachTTS();
+  bool adviceCooldown = false;
+  int currentAdvice = 0;
 
   /// ******************************
-
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: Colors.grey[900],
-            title: const Text(
-              'Are you sure?',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            content: const Text(
-              'Do you want to exit this screen?',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        )) ??
-        false;
-  }
 
   void showInstructions() {
     showDialog(
@@ -177,6 +137,48 @@ class _CameraScreenState extends State<CameraScreen>
         );
       },
     );
+  }
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: Colors.grey[900],
+            title: const Text(
+              'Are you sure?',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            content: const Text(
+              'Do you want to exit this screen?',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )) ??
+        false;
   }
 
   @override
@@ -265,11 +267,13 @@ class _CameraScreenState extends State<CameraScreen>
     List<dynamic> inferenceResults =
         inferenceResultsMap['resultsCoordinates'] as List<dynamic>;
 
+    /// Warm up mode inferences
     if (warmupMode) {
       warmupInferences.add(inferenceResults[widget.exercise.trackedKeypoint]
           [widget.exercise.trackingDirection]);
     }
 
+    /// Counting reps inferences
     if (isNotMoving &&
         countingRepsMode &&
         inferenceResults[widget.exercise.trackedKeypoint][2] >= 0.3) {
@@ -278,6 +282,20 @@ class _CameraScreenState extends State<CameraScreen>
       if (repCounter.currentRepCount >= repCounter.maxRepCount) {
         countingRepsMode = false;
       }
+    }
+
+    /// Random advice during workout if form correctness < 0.5
+    if (!adviceCooldown &&
+        formCorrectness < 0.5 &&
+        (warmupMode || (countingRepsMode))) {
+      print("here");
+      tts.speak(widget.exercise.correctionAdvice[
+          currentAdvice % widget.exercise.correctionAdvice.length]);
+      currentAdvice++;
+      adviceCooldown = true;
+      Timer(const Duration(seconds: 15), () {
+        adviceCooldown = false;
+      });
     }
 
     setState(() {

@@ -8,6 +8,7 @@ class Exercise {
   final String formCorrectnessModel;
   final List<String> targetedMuscles;
   final List<String> cameraInstructions;
+  final List<String> correctionAdvice;
 
   Exercise({
     required this.name,
@@ -19,6 +20,7 @@ class Exercise {
     required this.formCorrectnessModel,
     required this.targetedMuscles,
     required this.cameraInstructions,
+    required this.correctionAdvice,
   });
 }
 
@@ -47,6 +49,12 @@ final List<Exercise> availableExercises = [
       "When you're done, go back to your phone and start you rest period",
       "If you want to, you can always just finish your set early and take your rest. Remember, exercise is supposed to be fun!",
     ],
+    correctionAdvice: [
+      'Keep your body straight and aligned throughout the movement',
+      'Keep your elbows close to your body, not flared out',
+      'Lower your body until your chest almost touches the floor',
+      'Push through your palms evenly to maintain balance',
+    ],
   ),
   Exercise(
     name: 'Pull Ups',
@@ -72,6 +80,12 @@ final List<Exercise> availableExercises = [
       "Once you have started a set, you should perform the required number of reps",
       "When you're done, go back to your phone and start you rest period",
       "If you want to, you can always just finish your set early and take your rest. Remember, exercise is supposed to be fun!",
+    ],
+    correctionAdvice: [
+      'Keep your shoulders down and away from your ears',
+      "Engage your core and don't swing your body",
+      'Pull your elbows down and back, not out to the sides',
+      'Lower your body all the way down before starting the next rep',
     ],
   ),
   Exercise(
@@ -103,6 +117,12 @@ final List<Exercise> availableExercises = [
       "Once you have started a set, you should perform the required number of reps",
       "When you're done, go back to your phone and start you rest period",
       "If you want to, you can always just finish your set early and take your rest. Remember, exercise is supposed to be fun!",
+    ],
+    correctionAdvice: [
+      'Keep your knees in line with your toes',
+      'Squat down until your thighs are parallel to the ground',
+      'Keep your chest up and back straight',
+      'Push through your heels to stand up',
     ],
   )
 ];
