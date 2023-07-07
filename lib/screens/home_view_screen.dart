@@ -313,27 +313,30 @@ class HomeViewBody extends StatelessWidget {
                 itemCount: availableExercises.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (BuildContext context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ExerciseSelectionScreen(
+                  return InkWell(
+                    onTap: () {},
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExerciseSelectionScreen(
+                              exercise: availableExercises[index],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        color: Colors.black54,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 8, top: 8, bottom: 8),
+                          child: CustomListTile(
                             exercise: availableExercises[index],
                           ),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      color: Colors.black54,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 12, right: 8, top: 8, bottom: 8),
-                        child: CustomListTile(
-                          exercise: availableExercises[index],
                         ),
                       ),
                     ),

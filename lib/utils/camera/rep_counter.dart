@@ -35,16 +35,25 @@ class RepCounter {
   /// Running MoveNet to find the max and min altitude
   /// of the workout performed, appearing to the user in the
   /// form of "Warmup Mode"
-  void startCounting(int trackedKeypointLocation) {
-    // Initialize the flag `up = false`
-    // Comparing the tracked keypoint's location to the midpoint and quartile
-    if (trackedKeypointLocation > (midpoint + quartile) &&
-        upPosition == false) {
-      currentRepCount += 1;
-      tts.speak(currentRepCount.toString());
-      upPosition = true;
-    } else if (trackedKeypointLocation < midpoint) {
-      upPosition = false;
+  void startCounting(int trackedKeypointLocation, bool fullRepPosition) {
+    if (!fullRepPosition) {
+      if (trackedKeypointLocation > (midpoint + quartile) &&
+          upPosition == false) {
+        currentRepCount += 1;
+        tts.speak(currentRepCount.toString());
+        upPosition = true;
+      } else if (trackedKeypointLocation < midpoint) {
+        upPosition = false;
+      }
+    } else {
+      if (trackedKeypointLocation < (midpoint - quartile) &&
+          upPosition == false) {
+        currentRepCount += 1;
+        tts.speak(currentRepCount.toString());
+        upPosition = true;
+      } else if (trackedKeypointLocation > midpoint) {
+        upPosition = false;
+      }
     }
   }
 

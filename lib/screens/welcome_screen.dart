@@ -172,6 +172,7 @@ class WelcomeScreen extends StatelessWidget {
                         const EdgeInsets.only(right: 40.0, top: 40, bottom: 40),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           "Skip Intro",

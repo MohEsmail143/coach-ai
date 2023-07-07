@@ -81,6 +81,7 @@ class _CameraScreenState extends State<CameraScreen>
 
   /// FormClassifier-related fields
   double formCorrectness = 0.0;
+  bool showCorrectness = false;
   late FormClassifier formClassifier;
 
   /// ******************************
@@ -273,12 +274,22 @@ class _CameraScreenState extends State<CameraScreen>
           [widget.exercise.trackingDirection]);
     }
 
+    /*
+    if (isNotMoving) {
+      print("I'm not moving");
+    } else {
+      print("I'm moving");
+    }
+    */
+
     /// Counting reps inferences
     if (isNotMoving &&
         countingRepsMode &&
         inferenceResults[widget.exercise.trackedKeypoint][2] >= 0.3) {
-      repCounter.startCounting(inferenceResults[widget.exercise.trackedKeypoint]
-          [widget.exercise.trackingDirection]);
+      repCounter.startCounting(
+          inferenceResults[widget.exercise.trackedKeypoint]
+              [widget.exercise.trackingDirection],
+          widget.exercise.fullRepPosition);
       if (repCounter.currentRepCount >= repCounter.maxRepCount) {
         countingRepsMode = false;
       }
@@ -287,13 +298,14 @@ class _CameraScreenState extends State<CameraScreen>
     /// Random advice during workout if form correctness < 0.5
     if (!adviceCooldown &&
         formCorrectness < 0.5 &&
-        (warmupMode || (countingRepsMode))) {
+        showCorrectness &&
+        (warmupMode || countingRepsMode)) {
       // print("here");
       tts.speak(widget.exercise.correctionAdvice[
           currentAdvice % widget.exercise.correctionAdvice.length]);
       currentAdvice++;
       adviceCooldown = true;
-      Timer(const Duration(seconds: 15), () {
+      Timer(const Duration(seconds: 30), () {
         adviceCooldown = false;
       });
     }
@@ -403,10 +415,8 @@ class _CameraScreenState extends State<CameraScreen>
                   ),
                 ),
                 Visibility(
-                  visible: warmupMode ||
-                      countingRepsMode &&
-                          !currentlyRestingMode &&
-                          allowRestMode,
+                  visible:
+                      warmupMode || showCorrectness && !currentlyRestingMode,
                   child: Positioned(
                     bottom: 24,
                     left: 24,
@@ -486,12 +496,14 @@ class _CameraScreenState extends State<CameraScreen>
                           Timer(
                             Duration(seconds: widget.session.restTime),
                             () {
+                              showCorrectness = false;
                               allowRestMode = false;
                               currentlyRestingMode = false;
                               repCounter.resetRepCount();
                             },
                           );
                         } else {
+                          // At this condition, the user will have finished his required sets, and completed his workout
                           tts.speak(
                               "Well done! You have completed your workout! Great Job!");
                           showDialog(
@@ -532,8 +544,15 @@ class _CameraScreenState extends State<CameraScreen>
                         }
                       }
                       // repCounter.resetRepCount();
-                      countingRepsMode = true;
+                      showCorrectness = true;
                       allowRestMode = true;
+
+                      Timer(
+                        const Duration(seconds: 5),
+                        () {
+                          countingRepsMode = true;
+                        },
+                      );
                     } else if (!warmedUpAtLeastOnce) {
                       Fluttertoast.showToast(
                           msg: "You should warm up first",
