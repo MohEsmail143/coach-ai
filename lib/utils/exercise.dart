@@ -73,7 +73,7 @@ final List<Exercise> availableExercises = [
     trackedKeypoint: kKeypointDict['nose'] as int,
     trackingDirection: 1,
     fullRepPosition: false,
-    formCorrectnessModel: 'models/pullUp.tflite',
+    formCorrectnessModel: 'models/pullUp_v2.tflite',
     targetedMuscles: ['Back', 'Biceps', 'Shoulders'],
     cameraInstructions: [
       "For this exercise, you need to place your phone in a portrait orientation.",

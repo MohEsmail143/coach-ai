@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 
 import '../utils/camera/coach_tts.dart';
 import '../utils/exercise.dart';
@@ -72,13 +71,6 @@ class _CameraScreenState extends State<CameraScreen>
 
   /// ******************************
 
-  /// SENSOR-RELATED FIELDS
-  late StreamSubscription<AccelerometerEvent> _accelerometerSubscription;
-  double _accelerationMagnitude = 0.0;
-  late bool isNotMoving;
-
-  /// ******************************
-
   /// FormClassifier-related fields
   double formCorrectness = 0.0;
   bool showCorrectness = false;
@@ -87,7 +79,7 @@ class _CameraScreenState extends State<CameraScreen>
   /// ******************************
 
   /// FlutterTTS-related field
-  CoachTTS tts = CoachTTS();
+  CoachTTS coachTTS = CoachTTS();
   bool adviceCooldown = false;
   int currentAdvice = 0;
 
@@ -189,16 +181,6 @@ class _CameraScreenState extends State<CameraScreen>
         FormClassifier(confidenceModel: widget.exercise.formCorrectnessModel);
     _restSecondsRemaining = widget.session.restTime;
 
-    /****** SENSOR-RELATED CODE ******/
-    _accelerometerSubscription =
-        accelerometerEvents.listen((AccelerometerEvent event) {
-      // Calculate the magnitude of the acceleration vector
-      _accelerationMagnitude =
-          event.x * event.x + event.y * event.y + event.z * event.z;
-    });
-    isNotMoving = _accelerationMagnitude == 0.0;
-    /*********************************/
-
     super.initState();
     initAsync();
   }
@@ -221,7 +203,7 @@ class _CameraScreenState extends State<CameraScreen>
     classifier = PoseDetector();
     classifier.loadModel();
 
-    tts.speak(
+    coachTTS.speak(
         "Welcome to Coach.ai! Please read the following instructions carefully.");
     showInstructions();
 
@@ -283,8 +265,7 @@ class _CameraScreenState extends State<CameraScreen>
     */
 
     /// Counting reps inferences
-    if (isNotMoving &&
-        countingRepsMode &&
+    if (countingRepsMode &&
         inferenceResults[widget.exercise.trackedKeypoint][2] >= 0.3) {
       repCounter.startCounting(
           inferenceResults[widget.exercise.trackedKeypoint]
@@ -301,7 +282,7 @@ class _CameraScreenState extends State<CameraScreen>
         showCorrectness &&
         (warmupMode || countingRepsMode)) {
       // print("here");
-      tts.speak(widget.exercise.correctionAdvice[
+      coachTTS.speak(widget.exercise.correctionAdvice[
           currentAdvice % widget.exercise.correctionAdvice.length]);
       currentAdvice++;
       adviceCooldown = true;
@@ -346,7 +327,7 @@ class _CameraScreenState extends State<CameraScreen>
         if (_restSecondsRemaining > 0) {
           _restSecondsRemaining--;
         } else {
-          tts.speak("Time's up! Let's get back to work.");
+          coachTTS.speak("Time's up! Let's get back to work.");
           timer.cancel();
         }
       });
@@ -458,7 +439,7 @@ class _CameraScreenState extends State<CameraScreen>
                       warmupMode = false;
                       repCounter.warmup(warmupInferences);
                       warmedUpAtLeastOnce = true;
-                      tts.speak(
+                      coachTTS.speak(
                           "You have now finished your warmup. You can start exercising now! Don't worry, I will tell you each time you perform a rep, and when you complete a set.");
                     });
                     // print(warmupInferences);
@@ -488,7 +469,7 @@ class _CameraScreenState extends State<CameraScreen>
                       if (allowRestMode &&
                           (currentSetCount < widget.session.sets)) {
                         currentSetCount++;
-                        tts.speak(
+                        coachTTS.speak(
                             "You have finished your set! Take a ${widget.session.restTime} second break and come back.");
                         if (currentSetCount < widget.session.sets) {
                           currentlyRestingMode = true;
@@ -504,7 +485,7 @@ class _CameraScreenState extends State<CameraScreen>
                           );
                         } else {
                           // At this condition, the user will have finished his required sets, and completed his workout
-                          tts.speak(
+                          coachTTS.speak(
                               "Well done! You have completed your workout! Great Job!");
                           showDialog(
                             context: context,
@@ -603,9 +584,8 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   void dispose() {
-    tts.tts.stop();
+    coachTTS.tts.stop();
     cameraController.dispose();
-    _accelerometerSubscription.cancel();
     isolate.stop();
     super.dispose();
   }
