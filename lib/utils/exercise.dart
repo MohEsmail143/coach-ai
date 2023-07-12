@@ -37,7 +37,7 @@ final List<Exercise> availableExercises = [
     ],
     image: "assets/images/push_up.png",
     gif: 'assets/images/push_up.gif',
-    trackedKeypoint: kKeypointDict['right_shoulder'] as int,
+    trackedKeypoint: kKeypointDict['left_shoulder'] as int,
     trackingDirection: 0,
     fullRepPosition: true,
     formCorrectnessModel: 'models/pushUp_version2.tflite',
@@ -45,7 +45,7 @@ final List<Exercise> availableExercises = [
     cameraInstructions: [
       "For this exercise, you need to place your phone in a landscape orientation.",
       "While exercising, your phone needs to be in a stable position (i.e. not move).",
-      "Your phone's camera should be able to view your entire body's right side, specially your right shoulder, since we use it to track your reps.",
+      "Your phone's camera should be able to view your entire body's left side, specially your left shoulder, since we use it to track your reps.",
       "Start a warmup for 15 seconds. This is necessary for our AI to calculate some statistics off your body.",
       "Once you're done with your warmup, you should be able to start your workout.",
       "Once you have started a set, you should perform the required number of reps.",

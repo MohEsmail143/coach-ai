@@ -15,10 +15,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fontWeight: FontWeight.bold,
                     )),
               ),
-              CustomizedTextfield(
-                myController: _usernameController,
-                hintText: "Username",
-                isPassword: false,
-              ),
+
               CustomizedTextfield(
                 myController: _emailController,
                 hintText: "Email",
@@ -71,11 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 hintText: "Password",
                 isPassword: true,
               ),
-              CustomizedTextfield(
-                myController: _confirmPasswordController,
-                hintText: "Confirm Password",
-                isPassword: true,
-              ),
+
               CustomizedButton(
                 buttonText: "Register",
                 buttonColor: Colors.black,

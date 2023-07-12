@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "678883326424",
+    "project_id": "gradproject-2531f",
+    "storage_bucket": "gradproject-2531f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678883326424:android:6e1b42f38e056cab6f1aad",
+        "android_client_info": {
+          "package_name": "com.example.coach_ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678883326424-bmlg9tmdq9rvr3rb695f8o2vhlidec4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZLKu4d-9CacQvO66ak06AeJQqvat67bM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678883326424-bmlg9tmdq9rvr3rb695f8o2vhlidec4n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,9 @@
 import 'package:coach_ai/screens/exercise_selection_screen.dart';
-import 'package:coach_ai/screens/nutrition_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'nutrition_screen.dart';
 import 'profile_screen.dart';
 import 'bmi/calculate_bmi.dart';
 import '../utils/exercise.dart';

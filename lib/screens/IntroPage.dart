@@ -61,10 +61,10 @@ class _IntroPageState extends State<IntroPage> {
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Colors.green), // set the background color
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.all(20)), // set the padding
+                        EdgeInsets.all(10)), // set the padding
                     textStyle: MaterialStateProperty.all<TextStyle>(
-                        TextStyle(fontSize: 23)), // set the text style
-                    fixedSize: MaterialStateProperty.all<Size>(Size(20, 50)),
+                        TextStyle(fontSize: 20)), // set the text style
+                    fixedSize: MaterialStateProperty.all<Size>(Size(25, 50)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius:
@@ -82,7 +82,7 @@ class _IntroPageState extends State<IntroPage> {
                   child: Text('Sign up', style: TextStyle(color: Colors.white)),
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.all(20)), // set the padding
+                        EdgeInsets.all(10)), // set the padding
                     textStyle: MaterialStateProperty.all<TextStyle>(
                         TextStyle(fontSize: 23)), // set the text style
                     fixedSize: MaterialStateProperty.all<Size>(Size(20, 50)),
