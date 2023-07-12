@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/firebase_auth_service.dart';
 import '../widgets/customized_button.dart';
 import 'forgot_passwor.dart';
-import 'package:coach_ai/screens/home_view_screen.dart';
+// import 'package:coach_ai/screens/home_view_screen.dart';
 import 'package:coach_ai/screens/welcome_screen.dart';
 
 class LoginScreen extends StatefulWidget {

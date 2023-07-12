@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:coach_ai/screens/welcome_screen.dart';
-import 'firebase_options.dart';
+// import 'package:coach_ai/screens/welcome_screen.dart';
+// import 'firebase_options.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:coach_ai/screens/IntroPage.dart';
 
